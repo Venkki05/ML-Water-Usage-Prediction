@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Usage Predictor 💧</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background Bubbles -->
+    <div class="bubbles-container">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header fade-in">
+            <h1 class="header__title">💧 Water Quality Usage Predictor</h1>
+            <p class="header__subtitle">AI-Powered Water Quality Analysis</p>
+            <p class="header__description">Enter water quality parameters to predict the most suitable domestic use. Our machine learning model analyzes 9 key indicators to determine if water is best for drinking, cooking, bathing, or cleaning.</p>
+        </header>
+
+        <!-- Quick Fill Buttons -->
+        <div class="quick-fill fade-in">
+            <h3>Quick Fill Examples:</h3>
+            <div class="quick-fill__buttons">
+                <button class="btn btn--outline" onclick="fillHighQuality()">🌟 High Quality</button>
+                <button class="btn btn--outline" onclick="fillModerateQuality()">⚠️ Moderate Quality</button>
+                <button class="btn btn--outline" onclick="fillLowQuality()">❌ Low Quality</button>
+            </div>
+        </div>
+
+        <!-- Input Form Section -->
+        <form id="waterForm" class="form fade-in">
+            <!-- Info Banner -->
+            <div class="form__info">
+                <span class="form__info-icon">ℹ️</span>
+                <p>Required parameters are the most important for accurate prediction. Advanced parameters will use optimal default values if not provided.</p>
+            </div>
+
+            <!-- Required Parameters Section -->
+            <div class="form__section">
+                <h3 class="form__section-title">
+                    <span class="form__section-icon">⚠️</span>
+                    Required Parameters
+                </h3>
+                <div class="form__grid">
+                <!-- pH Level -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">🌡️</span>
+                        <span>pH Level</span>
+                        <span class="form__required">*</span>
+                    </label>
+                    <span class="form__range">Range: 0 - 14</span>
+                    <input type="number" id="ph" name="ph" class="form__input" 
+                           min="0" max="14" step="0.1" placeholder="7.07" required>
+                    <span class="form__unit"></span>
+                    <small class="form__description">Acidity/alkalinity (0-14)</small>
+                </div>
+
+                <!-- Hardness -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">💎</span>
+                        <span>Hardness</span>
+                        <span class="form__required">*</span>
+                    </label>
+                    <span class="form__range">Range: 47.43 - 323.12 mg/L</span>
+                    <input type="number" id="hardness" name="hardness" class="form__input" 
+                           min="47.43" max="323.12" step="0.01" placeholder="204.39" required>
+                    <span class="form__unit">mg/L</span>
+                    <small class="form__description">Mineral content</small>
+                </div>
+
+                <!-- Total Dissolved Solids -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">⚗️</span>
+                        <span>Total Dissolved Solids</span>
+                        <span class="form__required">*</span>
+                    </label>
+                    <span class="form__range">Range: 320.94 - 61227.20 ppm</span>
+                    <input type="number" id="solids" name="solids" class="form__input" 
+                           min="320.94" max="61227.20" step="0.01" placeholder="16775.92" required>
+                    <span class="form__unit">ppm</span>
+                    <small class="form__description">Total dissolved solids</small>
+                </div>
+
+                <!-- Sulfate -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">🧪</span>
+                        <span>Sulfate</span>
+                        <span class="form__required">*</span>
+                    </label>
+                    <span class="form__range">Range: 129.00 - 481.03 mg/L</span>
+                    <input type="number" id="sulfate" name="sulfate" class="form__input" 
+                           min="129" max="481.03" step="0.01" placeholder="353.06" required>
+                    <span class="form__unit">mg/L</span>
+                    <small class="form__description">Sulfate content</small>
+                </div>
+            </div>
+            </div>
+
+            <!-- Advanced Parameters Section (Optional) -->
+            <div class="form__section">
+                <button type="button" class="form__toggle" onclick="toggleAdvanced()">
+                    <span class="form__section-icon">🔬</span>
+                    <span>Advanced Parameters (Optional)</span>
+                    <span class="form__toggle-icon" id="toggleIcon">▼</span>
+                </button>
+                <p class="form__toggle-hint" id="defaultHint">Using default values for advanced parameters</p>
+                <div class="form__advanced" id="advancedSection" style="display: none;">
+                <div class="form__grid">
+                <!-- Chloramines -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">💧</span>
+                        <span>Chloramines</span>
+                        <span class="form__optional">Optional</span>
+                    </label>
+                    <span class="form__range">Range: 0.35 - 13.13 ppm</span>
+                    <input type="number" id="chloramines" name="chloramines" class="form__input" 
+                           min="0.35" max="13.13" step="0.01" placeholder="Optional (Default: 7.17)">
+                    <span class="form__unit">ppm</span>
+                    <small class="form__description">Disinfectant level</small>
+                </div>
+
+                <!-- Conductivity -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">⚡</span>
+                        <span>Conductivity</span>
+                        <span class="form__optional">Optional</span>
+                    </label>
+                    <span class="form__range">Range: 181.48 - 753.34 μS/cm</span>
+                    <input type="number" id="conductivity" name="conductivity" class="form__input" 
+                           min="181.48" max="753.34" step="0.01" placeholder="Optional (Default: 415.16)">
+                    <span class="form__unit">μS/cm</span>
+                    <small class="form__description">Electrical conductivity</small>
+                </div>
+
+                <!-- Organic Carbon -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">🌿</span>
+                        <span>Organic Carbon</span>
+                        <span class="form__optional">Optional</span>
+                    </label>
+                    <span class="form__range">Range: 2.20 - 28.30 ppm</span>
+                    <input type="number" id="organic_carbon" name="organic_carbon" class="form__input" 
+                           min="2.20" max="28.30" step="0.01" placeholder="Optional (Default: 14.70)">
+                    <span class="form__unit">ppm</span>
+                    <small class="form__description">Total organic carbon</small>
+                </div>
+
+                <!-- Trihalomethanes -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">☣️</span>
+                        <span>Trihalomethanes</span>
+                        <span class="form__optional">Optional</span>
+                    </label>
+                    <span class="form__range">Range: 0.74 - 124.00 μg/L</span>
+                    <input type="number" id="trihalomethanes" name="trihalomethanes" class="form__input" 
+                           min="0.74" max="124" step="0.01" placeholder="Optional (Default: 70.22)">
+                    <span class="form__unit">μg/L</span>
+                    <small class="form__description">THM level</small>
+                </div>
+
+                <!-- Turbidity -->
+                <div class="form__group">
+                    <label class="form__label">
+                        <span class="form__icon">🌊</span>
+                        <span>Turbidity</span>
+                        <span class="form__optional">Optional</span>
+                    </label>
+                    <span class="form__range">Range: 1.45 - 6.74 NTU</span>
+                    <input type="number" id="turbidity" name="turbidity" class="form__input" 
+                           min="1.45" max="6.74" step="0.01" placeholder="Optional (Default: 3.87)">
+                    <span class="form__unit">NTU</span>
+                    <small class="form__description">Water clarity</small>
+                </div>
+            </div>
+            </div>
+            </div>
+
+            <div class="form__actions">
+                <button type="button" class="btn btn--secondary" onclick="resetForm()">Reset</button>
+                <button type="submit" class="btn btn--primary" id="analyzeBtn">
+                    <span class="btn__text">Analyze Water Quality</span>
+                    <span class="btn__loader" style="display: none;"></span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="results" style="display: none;">
+            <div class="results__card" id="predictionCard">
+                <div class="ripple-effect"></div>
+                
+                <div class="results__main">
+                    <div class="results__icon" id="resultIcon">🚰</div>
+                    <h2 class="results__title" id="resultTitle">Drinking</h2>
+                    <p class="results__description" id="resultDescription">Safe for drinking and consumption</p>
+                    <div class="results__confidence">
+                        <span class="results__confidence-label">Confidence:</span>
+                        <span class="results__confidence-value" id="confidenceValue">92%</span>
+                    </div>
+                </div>
+
+                <div class="results__summary">
+                    <h3>Analysis Summary</h3>
+                    <div class="results__grid" id="resultsSummary"></div>
+                </div>
+
+                <div class="results__model-info">
+                    <p>Model Accuracy: <strong>92%</strong> | Samples Analyzed: <strong>11,128</strong></p>
+                </div>
+
+                <button class="btn btn--primary" onclick="analyzeAgain()">Analyze Again</button>
+            </div>
+
+            <!-- Water Treatment Recommendations Section -->
+            <div class="treatment" id="treatmentSection" style="display: none;">
+                <div class="treatment__header">
+                    <h2 class="treatment__title">💧 How to Make This Water Suitable for Drinking</h2>
+                    <p class="treatment__subtitle">Based on your water quality parameters</p>
+                </div>
+
+                <!-- Parameter Analysis Grid -->
+                <div class="treatment__analysis">
+                    <h3 class="treatment__section-title">Parameter Analysis</h3>
+                    <div class="treatment__grid" id="parameterAnalysisGrid"></div>
+                </div>
+
+                <!-- Treatment Methods Section -->
+                <div class="treatment__methods" id="treatmentMethodsSection"></div>
+
+                <!-- Comprehensive Treatment Process -->
+                <div class="treatment__comprehensive">
+                    <button class="treatment__comprehensive-toggle" onclick="toggleComprehensiveProcess()">
+                        <span class="treatment__comprehensive-icon">📋</span>
+                        <span>View Complete 9-Stage Treatment Process</span>
+                        <span class="treatment__comprehensive-arrow" id="comprehensiveArrow">▼</span>
+                    </button>
+                    <div class="treatment__comprehensive-content" id="comprehensiveContent" style="display: none;">
+                        <div class="treatment__stages" id="treatmentStages"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
